@@ -1,50 +1,59 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MAIN-MANIA v5.1 FIX</title><style>
-*{margin:0;padding:0;box-sizing:border-box}body{background:#1a1033;color:#fff;font-family:sans-serif}
-h1{text-align:center;color:#ffde59;padding:15px}
-.menu{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:15px}
-.card{background:#2a1f4d;border:2px solid #3d2e6e;border-radius:20px;padding:20px;text-align:center}
-#gamePage{display:none;position:fixed;inset:0;background:#0f0a1f;flex-direction:column;overflow:auto}
-.top{display:flex;justify-content:space-between;padding:10px}
-.btn{background:#ffde59;color:#000;border:0;padding:8px 14px;border-radius:20px;font-weight:bold}
-canvas{background:#0a5c36;display:block;margin:auto;border:8px solid #5d4037;border-radius:12px}
-.chess{width:360px;height:360px;display:grid;grid-template-columns:repeat(8,1fr);margin:10px auto;border:4px solid #5d4037}
-.sq{display:flex;align-items:center;justify-content:center;font-size:24px}.w{background:#f0d9b5}.b{background:#b58863}
-.center{text-align:center;padding:20px}.bigBtn{background:#ffde59;color:#000;border:0;padding:12px 25px;border-radius:25px;font-weight:bold;margin:5px}
-.card21{width:55px;height:80px;background:#fff;color:#000;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;margin:4px;font-weight:bold}
-.bar{height:10px;background:#222;margin:8px 20px;border-radius:10px;overflow:hidden}#fill{height:100%;width:0%;background:yellow}
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MAIN-MANIA MAGER</title><style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}body{background:#f6f7fb;color:#111}
+.topBar{display:flex;gap:8px;padding:10px;background:#fff;position:sticky;top:0;z-index:5}
+.coinBox{flex:1;background:#1a233a;border-radius:30px;color:#fff;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;font-weight:bold;font-size:14px}
+.banner{margin:12px;background:linear-gradient(90deg,#ff6a00,#ff2e63);border-radius:20px;padding:14px;color:#fff;position:relative;overflow:hidden}
+.banner.live{background:#fff;color:#ff2e63;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold}
+.jackpot{font-size:22px;font-weight:900;line-height:1}
+.btnBlue{background:#00a8ff;color:#fff;border:0;padding:10px 20px;border-radius:20px;font-weight:bold;width:100%;margin-top:8px}
+.section{padding:0 12px;margin-top:12px}
+.gameRow{display:flex;gap:12px;overflow:auto;padding-bottom:10px}
+.gCard{min-width:130px;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 4px 12px #0001;text-align:center}
+.gCard img{width:100%;height:90px;object-fit:cover}
+.gCard b{font-size:13px}
+.hadiah{font-size:11px;background:#3d2e6e;color:#ffde59;padding:4px 6px;border-radius:10px;display:inline-block;margin:4px}
+.miniBanner{background:linear-gradient(90deg,#ffb347,#ffcc33);border-radius:18px;padding:12px;display:flex;justify-content:space-between;align-items:center;margin:10px 12px}
+.miniBanner2{background:linear-gradient(90deg,#c084fc,#a855f7)}
+.bottomNav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #eee}
+.bottomNav div{text-align:center;font-size:11px;color:#888}.bottomNav.active{color:#00a8ff}
+#gamePage{display:none;position:fixed;inset:0;background:#0f0a1f;flex-direction:column;z-index:20;overflow:auto}
+#menuPage{padding-bottom:80px}
 </style></head><body>
-<div id="menuPage"><h1>🎮 MAIN-MANIA v5.1</h1><p style="text-align:center">FIX - Semua Bisa Dibuka!</p>
-<div class="menu">
-<div class="card" onclick="openGame('billiard')"><div style="font-size:40px">🎱</div><b>Billiard Pro</b></div>
-<div class="card" onclick="openGame('catur')"><div style="font-size:40px">♟️</div><b>Catur 2P</b></div>
-<div class="card" onclick="openGame('kartu')"><div style="font-size:40px">🃏</div><b>Kartu 21</b></div>
-<div class="card" onclick="openGame('bingo')"><div style="font-size:40px">🔢</div><b>Bingo</b></div>
+<div id="menuPage">
+<div class="topBar"><div class="coinBox">👤 1.125 🎫</div><div class="coinBox">1.447.828 🏆</div><div class="coinBox">7.460 🪙</div></div>
+
+<div class="banner"><span style="background:#ffd700;color:#000;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:bold;position:absolute;top:10px;left:10px">GRATIS</span><br>
+<span class="live">Undian LIVE</span><div class="jackpot">MENANGKAN JACKPOT<br>RP 100 JUTA!</div><button class="btnBlue" onclick="alert('Jackpot segera hadir!')">Lihat Undian</button></div>
+
+<div class="section"><div style="display:flex;justify-content:space-between"><h3>Main & Menangkan 🪙+🏆!</h3><small style="color:#00a8ff">Lihat semua ></small></div>
+<div class="gameRow">
+<div class="gCard" onclick="openG('billiard')"><div style="background:#0a5c36;height:90px;display:flex;align-items:center;justify-content:center;font-size:50px">🎱</div><b>Billiard Pro</b><br><span class="hadiah">🏆 5000 🪙</span></div>
+<div class="gCard" onclick="openG('catur')"><div style="background:#b58863;height:90px;display:flex;align-items:center;justify-content:center;font-size:50px">♟️</div><b>Catur Master</b><br><span class="hadiah">🏆 3000 🪙</span></div>
+<div class="gCard" onclick="openG('kartu')"><div style="background:#1a1033;height:90px;display:flex;align-items:center;justify-content:center;font-size:50px">🃏</div><b>Kartu 21</b><br><span class="hadiah">🏆 5000 🪙</span></div>
+<div class="gCard" onclick="openG('bingo')"><div style="background:#ffde59;height:90px;display:flex;align-items:center;justify-content:center;font-size:50px">🔢</div><b>Bingo</b><br><span class="hadiah">🏆 2000 🪙</span></div>
 </div></div>
-<div id="gamePage"><div class="top"><button class="btn" onclick="backToMenu()">← Menu</button><b id="gTitle">GAME</b><span>💰1000</span></div>
-<div id="dBilliard"><canvas id="c" width="360" height="600"></canvas><div class="bar"><div id="fill"></div></div><p style="text-align:center;font-size:11px">Tahan bola putih, tarik, lepas!</p></div>
-<div id="dCatur" style="display:none"><div id="chessBoard" class="chess"></div><p id="turnInfo" style="text-align:center">Giliran Putih</p><div class="center"><button class="bigBtn" onclick="initCatur()">Reset Catur</button></div></div>
-<div id="dKartu" style="display:none" class="center"><h3>Blackjack 21</h3><div>Bandar: <span id="dealerSpan"></span> <b id="dealerScore"></b></div><div>Kamu: <span id="playerSpan"></span> <b id="playerScore"></b></div><br><button class="bigBtn" onclick="hitKartu()">Ambil</button><button class="bigBtn" onclick="standKartu()">Stop</button><button class="bigBtn" onclick="initKartu()">Baru</button><p id="msgKartu"></p></div>
-<div id="dBingo" style="display:none" class="center"><h1 id="bingoNum" style="font-size:80px">--</h1><p id="bingoList"></p><button class="bigBtn" onclick="putarBingo()">Putar!</button><button class="bigBtn" onclick="initBingo()">Reset</button></div>
+
+<div class="section"><h3>Kumpulin 🏆 Yuk!</h3></div>
+<div class="miniBanner"><div><b style="font-size:20px">SLOT<br>MASTER</b></div><button class="btnBlue" style="width:auto" onclick="openG('bingo')">Lihat</button></div>
+<div class="miniBanner miniBanner2"><div><b>MISI HARIAN</b><br><small>PULUHAN RIBU TIKET GRATIS TIAP HARI</small></div><button class="btnBlue" style="width:auto;background:#fff;color:#a855f7">Lihat</button></div>
+
+<div class="bottomNav"><div class="active">🎮<br>Main</div><div>👥<br>Teman</div><div>🆚<br>Hasil</div><div>🏪<br>Toko</div><div>🎁<br>Hadiahku</div></div>
+</div>
+
+<div id="gamePage"><div style="display:flex;justify-content:space-between;padding:12px;background:#fff;color:#000"><button style="background:#eee;border:0;padding:6px 12px;border-radius:20px" onclick="back()">← Menu</button><b id="gTitle">GAME</b><span>💰1000</span></div>
+<div id="dBilliard"><canvas id="c" width="360" height="500" style="background:#0a5c36;display:block;margin:10px auto;border:6px solid #5d4037;border-radius:12px"></canvas><p style="text-align:center;color:#fff;font-size:12px">Tahan bola putih, tarik, lepas!</p></div>
+<div id="dCatur" style="display:none"><div id="board" style="width:360px;height:360px;display:grid;grid-template-columns:repeat(8,1fr);margin:10px auto;border:4px solid #5d4037"></div><p id="turn" style="text-align:center;color:#fff">Giliran Putih</p></div>
+<div id="dKartu" style="display:none;text-align:center;color:#fff;padding:20px"><h3>Blackjack 21</h3><div id="pS"></div><div id="dS"></div><br><button onclick="hit()" style="background:#ffde59;padding:10px 20px;border-radius:20px;border:0;font-weight:bold">Ambil</button><button onclick="stand()" style="background:#fff;padding:10px 20px;border-radius:20px;border:0;font-weight:bold">Stop</button><button onclick="initK()" style="background:#333;color:#fff;padding:10px 20px;border-radius:20px;border:0">Baru</button><p id="msg"></p></div>
+<div id="dBingo" style="display:none;text-align:center;color:#fff;padding:20px"><h1 id="bN" style="font-size:80px">--</h1><p id="bL"></p><button onclick="goB()" style="background:#ffde59;padding:12px 25px;border-radius:25px;border:0;font-weight:bold">Putar!</button></div>
 </div>
 <script>
-function openGame(g){document.getElementById('menuPage').style.display='none';document.getElementById('gamePage').style.display='flex';document.getElementById('dBilliard').style.display=g=='billiard'?'block':'none';document.getElementById('dCatur').style.display=g=='catur'?'block':'none';document.getElementById('dKartu').style.display=g=='kartu'?'block':'none';document.getElementById('dBingo').style.display=g=='bingo'?'block':'none';document.getElementById('gTitle').innerText=g.toUpperCase();if(g=='billiard')initBilliard();if(g=='catur')initCatur();if(g=='kartu')initKartu();if(g=='bingo')initBingo();}
-function backToMenu(){document.getElementById('gamePage').style.display='none';document.getElementById('menuPage').style.display='block';}
-const canvas=document.getElementById('c'),ctx=canvas.getContext('2d'),fill=document.getElementById('fill');let balls=[],pockets=[],white,cue={drag:false,cx:0,cy:0};
-function initBilliard(){pockets=[{x:18,y:18},{x:180,y:12},{x:342,y:18},{x:18,y:582},{x:180,y:588},{x:342,y:582}];balls=[];white={x:180,y:480,vx:0,vy:0,r:11,c:'white',out:false};balls.push(white);let cols=['#f22','#ff0','#22f','#f0f','#f80','#0fc','#a00'];for(let i=0;i<7;i++)balls.push({x:110+i*32,y:130+(i%2)*22,vx:0,vy:0,r:11,c:cols[i],out:false});}
-function getPos(e){let r=canvas.getBoundingClientRect(),t=e.touches?e.touches[0]:e;return{x:(t.clientX-r.left)*(360/r.width),y:(t.clientY-r.top)*(600/r.height)}}
-canvas.addEventListener('touchstart',e=>{e.preventDefault();let p=getPos(e);if(Math.hypot(p.x-white.x,p.y-white.y)<40){cue.drag=true;cue.cx=p.x;cue.cy=p.y;}},{passive:false});
-canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!cue.drag)return;let p=getPos(e);cue.cx=p.x;cue.cy=p.y;fill.style.width=Math.min(Math.hypot(white.x-p.x,white.y-p.y)*0.6,100)+'%';},{passive:false});
-canvas.addEventListener('touchend',()=>{if(!cue.drag)return;cue.drag=false;fill.style.width='0%';white.vx=(white.x-cue.cx)*0.18;white.vy=(white.y-cue.cy)*0.18;});
-function collide(a,b){let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy),m=a.r+b.r;if(d<m&&d>0){let o=(m-d)/2,nx=dx/d,ny=dy/d;a.x-=nx*o;b.x+=nx*o;a.y-=ny*o;b.y+=ny*o;let dvx=b.vx-a.vx,dvy=b.vy-a.vy,dot=dvx*nx+dvy*ny;if(dot<0){a.vx+=dot*nx;a.vy+=dot*ny;b.vx-=dot*nx;b.vy-=dot*ny;}}}
-(function loop(){requestAnimationFrame(loop);if(!balls.length)return;ctx.clearRect(0,0,360,600);ctx.fillStyle='#0a5c36';ctx.fillRect(0,0,360,600);pockets.forEach(p=>{ctx.fillStyle='#000';ctx.beginPath();ctx.arc(p.x,p.y,15,0,Math.PI*2);ctx.fill();});for(let i=0;i<balls.length;i++)for(let j=i+1;j<balls.length;j++)if(!balls[i].out&&!balls[j].out)collide(balls[i],balls[j]);balls.forEach(b=>{if(b.out)return;b.x+=b.vx;b.y+=b.vy;b.vx*=0.987;b.vy*=0.987;if(Math.abs(b.vx)<0.04)b.vx=0;if(Math.abs(b.vy)<0.04)b.vy=0;if(b.x-b.r<2||b.x+b.r>358){b.vx*=-0.8;b.x=Math.max(13,Math.min(347,b.x));}if(b.y-b.r<2||b.y+b.r>598){b.vy*=-0.8;b.y=Math.max(13,Math.min(587,b.y));}pockets.forEach(p=>{if(Math.hypot(b.x-p.x,b.y-p.y)<14){if(b===white){b.x=180;b.y=480;b.vx=0;b.vy=0;}else b.out=true;}});ctx.fillStyle=b.c;ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fill();});if(cue.drag){ctx.strokeStyle='#d2a679';ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(cue.cx,cue.cy);ctx.lineTo(white.x,white.y);ctx.stroke();}})();
-let boardData=[],sel=null,turnW=true;function initCatur(){boardData=[];let back=['♜','♞','♝','♛','♚','♝','♞','♜'];for(let r=0;r<8;r++){boardData[r]=[];for(let c=0;c<8;c++){if(r==0)boardData[r][c]={t:back[c],cl:'b'};else if(r==1)boardData[r][c]={t:'♟',cl:'b'};else if(r==6)boardData[r][c]={t:'♙',cl:'w'};else if(r==7)boardData[r][c]={t:['♖','♘','♗','♕','♔','♗','♘','♖'][c],cl:'w'};else boardData[r][c]=null;}}drawCatur();}
-function drawCatur(){let b=document.getElementById('chessBoard');b.innerHTML='';for(let r=0;r<8;r++)for(let c=0;c<8;c++){let d=document.createElement('div');d.className='sq '+( (r+c)%2?'b':'w');d.textContent=boardData[r][c]?boardData[r][c].t:'';d.onclick=(()=>{let rr=r,cc=c;return()=>{if(sel){boardData[rr][cc]=boardData[sel.r][sel.c];boardData[sel.r][sel.c]=null;sel=null;turnW=!turnW;drawCatur();}else if(boardData[rr][cc]&&((turnW&&boardData[rr][cc].cl=='w')||(!turnW&&boardData[rr][cc].cl=='b')))sel={r:rr,c:cc};}})();b.appendChild(d);}document.getElementById('turnInfo').innerText=turnW?'Giliran Putih':'Giliran Hitam';}
-let deckK,pcK,dcK;function initKartu(){deckK=[];for(let i=1;i<=13;i++)for(let k=0;k<4;k++)deckK.push(i>10?10:i);deckK.sort(()=>Math.random()-0.5);pcK=[deckK.pop(),deckK.pop()];dcK=[deckK.pop(),deckK.pop()];updKartu();document.getElementById('msgKartu').innerText='';}
-function valK(c){let s=c.reduce((a,b)=>a+b,0),a=c.filter(x=>x==1).length;while(s<=11&&a>0){s+=10;a--;}return s;}
-function updKartu(){document.getElementById('playerSpan').innerHTML=pcK.map(x=>'<span class=card21>'+(x==1?'A':x)+'</span>').join('');document.getElementById('dealerSpan').innerHTML=dcK.map(x=>'<span class=card21>'+(x==1?'A':x)+'</span>').join('');document.getElementById('playerScore').innerText='='+valK(pcK);document.getElementById('dealerScore').innerText='='+valK(dcK);}
-function hitKartu(){pcK.push(deckK.pop());updKartu();if(valK(pcK)>21)document.getElementById('msgKartu').innerText='Bust! Kalah';}
-function standKartu(){while(valK(dcK)<17)dcK.push(deckK.pop());updKartu();let pv=valK(pcK),dv=valK(dcK);document.getElementById('msgKartu').innerText=pv>21?'Kalah':dv>21||pv>dv?'Menang!':'Kalah';}
-let usedB=[];function initBingo(){usedB=[];document.getElementById('bingoNum').innerText='--';document.getElementById('bingoList').innerText='';}
-function putarBingo(){if(usedB.length>=90)return alert('Habis');let n;do{n=Math.floor(Math.random()*90)+1}while(usedB.includes(n));usedB.push(n);document.getElementById('bingoNum').innerText=n;document.getElementById('bingoList').innerText=usedB.join(', ');}
-initBilliard();
-</script></body></html>
+function openG(g){document.getElementById('menuPage').style.display='none';document.getElementById('gamePage').style.display='flex';['dBilliard','dCatur','dKartu','dBingo'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById(g=='billiard'?'dBilliard':g=='catur'?'dCatur':g=='kartu'?'dKartu':'dBingo').style.display='block';document.getElementById('gTitle').innerText=g.toUpperCase();if(g=='billiard')initB();if(g=='catur')initC();if(g=='kartu')initK();if(g=='bingo'){ub=[];document.getElementById('bN').innerText='--';document.getElementById('bL').innerText='';}}
+function back(){document.getElementById('gamePage').style.display='none';document.getElementById('menuPage').style.display='block';}
+const cv=document.getElementById('c'),cx=cv.getContext('2d');let balls=[],pocks=[],wh,cue={d:false,x:0,y:0};
+function initB(){pocks=[{x:18,y:18},{x:180,y:12},{x:342,y:18},{x:18,y:482},{x:180,y:488},{x:342,y:482}];balls=[];wh={x:180,y:380,vx:0,vy:0,r:10,c:'white',o:false};balls.push(wh);let cl=['#f22','#ff0','#22f','#f0f','#f80','#0fc'];for(let i=0;i<6;i++)balls.push({x:110+i*30,y:110,vx:0,vy:0,r:10,c:cl[i],o:false});}
+function gp(e){let r=cv.getBoundingClientRect(),t=e.touches?e.touches[0]:e;return{x:(t.clientX-r.left)*(360/r.width),y:(t.clientY-r.top)*(500/r.height)}}
+cv.addEventListener('touchstart',e=>{e.preventDefault();let p=gp(e);if(Math.hypot(p.x-wh.x,p.y-wh.y)<40){cue.d=true;cue.x=p.x;cue.y=p.y;}},{passive:false});
+cv.addEventListener('touchmove',e=>{e.preventDefault();if(!cue.d)return;let p=gp(e);cue.x=p.x;cue.y=p.y;},{passive:false});
+cv.addEventListener('touchend',()=>{if(!cue.d)return;cue.d=false;wh.vx=(wh.x-cue.x)*0.18;wh.vy=(wh.y-cue.y)*0.18;});
+function coll(a,b){let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy),m=a.r+b.r;if(d<m&&d>0){let o=(m-d)/2,nx=dx/d,ny=dy/d;a.x-=nx*o;b.x+=nx*o;a.y-=ny*o;b.y+=ny*o;let dvx=b.vx-a.vx,dvy=b.vy-a.vy,dot=dvx*nx+dvy*ny;if(dot<0){a.vx+=dot*nx;a.vy+=dot*ny;b.vx-=dot*nx;b.vy-=dot*ny;}}}
+(function lp(){requestAnimation

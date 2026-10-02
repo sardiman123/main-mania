@@ -1,69 +1,31 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MAIN-MANIA v4 FINAL</title><style>
-*{margin:0;padding:0;box-sizing:border-box}body{background:#1a1033;color:#fff;font-family:sans-serif;overflow:hidden}
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MAIN-MANIA v5</title><style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#1a1033;color:#fff;font-family:sans-serif}
+h1{text-align:center;color:#ffde59;padding:15px}
 .menu{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:15px}
-.card{background:#2a1f4d;border:2px solid #3d2e6e;border-radius:20px;padding:18px;text-align:center}
-.card.active{border-color:#ffde59;box-shadow:0 0 15px #ffde59}
-#game{display:none;position:fixed;inset:0;background:#0f0a1f;flex-direction:column}
-canvas{background:#0a5c36;display:block;margin:5px auto;border:8px solid #5d4037;border-radius:12px;touch-action:none}
+.card{background:#2a1f4d;border:2px solid #3d2e6e;border-radius:20px;padding:20px;text-align:center}
+#game{display:none;position:fixed;inset:0;background:#0f0a1f;flex-direction:column;overflow:auto}
 .top{display:flex;justify-content:space-between;padding:10px}
 .btn{background:#ffde59;color:#000;border:0;padding:8px 14px;border-radius:20px;font-weight:bold}
-.bar{height:12px;background:#222;margin:8px 20px;border-radius:10px;overflow:hidden}
-#fill{height:100%;width:0%;background:linear-gradient(90deg,#0f0,yellow,red);transition:width.05s}
+canvas{background:#0a5c36;display:block;margin:auto;border:8px solid #5d4037;border-radius:12px}
+.chess{width:360px;height:360px;display:grid;grid-template-columns:repeat(8,1fr);margin:10px auto;border:4px solid #5d4037}
+.sq{display:flex;align-items:center;justify-content:center;font-size:24px}
+.w{background:#f0d9b5;color:#000}.b{background:#b58863;color:#000}
+.center{text-align:center;padding:20px}.bigBtn{background:#ffde59;color:#000;border:0;padding:12px 25px;border-radius:25px;font-weight:bold;margin:5px}
+.card21{width:55px;height:80px;background:#fff;color:#000;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;margin:4px;font-weight:bold}
+.bar{height:10px;background:#222;margin:8px 20px;border-radius:10px;overflow:hidden}#fill{height:100%;width:0%;background:yellow}
 </style></head><body>
-<div id="menu"><h1 style="text-align:center;padding:15px;color:#ffde59">🎮 MAIN-MANIA v4</h1>
-<p style="text-align:center;opacity:.7">FINAL - Bola bisa tabrakan!</p>
+<div id="menu"><h1>🎮 MAIN-MANIA v5</h1><p style="text-align:center">Semua Game Jalan!</p>
 <div class="menu">
-<div class="card active" onclick="start()"><div style="font-size:50px">🎱</div><b>Billiard Pro FINAL</b><br><small>Tabrakan REAL!</small></div>
-<div class="card" onclick="alert('Catur segera')"><div style="font-size:40px">♟️</div><b>Catur</b></div>
-<div class="card" onclick="alert('Kartu 21 segera')"><div style="font-size:40px">🃏</div><b>Kartu 21</b></div>
-<div class="card" onclick="alert('Bingo segera')"><div style="font-size:40px">🔢</div><b>Bingo</b></div>
+<div class="card" onclick="openG('billiard')"><div style="font-size:40px">🎱</div><b>Billiard Pro</b><br><small>Bisa Tabrakan</small></div>
+<div class="card" onclick="openG('catur')"><div style="font-size:40px">♟️</div><b>Catur 2P</b></div>
+<div class="card" onclick="openG('kartu')"><div style="font-size:40px">🃏</div><b>Kartu 21</b></div>
+<div class="card" onclick="openG('bingo')"><div style="font-size:40px">🔢</div><b>Bingo</b></div>
 </div></div>
-<div id="game"><div class="top"><button class="btn" onclick="location.reload()">← Menu</button><b>BILLIARD PRO</b><span>💰1000</span></div>
-<canvas id="c" width="360" height="600"></canvas><div class="bar"><div id="fill"></div></div>
-<p style="text-align:center;font-size:12px">Tahan bola putih, tarik ke bawah, lepas!</p></div>
+<div id="game"><div class="top"><button class="btn" onclick="location.reload()">← Menu</button><b id="gt">GAME</b><span>💰1000</span></div>
+<div id="dBilliard"><canvas id="c" width="360" height="600"></canvas><div class="bar"><div id="fill"></div></div><p style="text-align:center;font-size:11px">Tahan bola putih, tarik, lepas!</p></div>
+<div id="dCatur" style="display:none"><div id="board" class="chess"></div><p id="turn" style="text-align:center">Giliran Putih</p><div class="center"><button class="bigBtn" onclick="initC()">Reset</button></div></div>
+<div id="dKartu" style="display:none" class="center"><h3>Blackjack 21</h3><div>Bandar: <span id="d"></span> <b id="ds"></b></div><div>Kamu: <span id="p"></span> <b id="ps"></b></div><br><button class="bigBtn" onclick="hit()">Ambil</button><button class="bigBtn" onclick="stand()">Stop</button><button class="bigBtn" onclick="initK()">Baru</button><p id="msg"></p></div>
+<div id="dBingo" style="display:none" class="center"><h1 id="bn" style="font-size:80px">--</h1><p id="bl" style="font-size:12px"></p><button class="bigBtn" onclick="nextB()">Putar!</button><button class="bigBtn" onclick="initB()">Reset</button></div>
+</div>
 <script>
-const canvas=document.getElementById('c'),ctx=canvas.getContext('2d'),fill=document.getElementById('fill');
-let balls=[],pockets=[],white, cue={drag:false,sx:0,sy:0,cx:0,cy:0,power:0},anim;
-function start(){document.getElementById('menu').style.display='none';document.getElementById('game').style.display='flex';init();}
-function init(){
-pockets=[{x:18,y:18},{x:180,y:12},{x:342,y:18},{x:18,y:582},{x:180,y:588},{x:342,y:582}];
-balls=[];white={x:180,y:480,vx:0,vy:0,r:11,c:'white',out:false};
-balls.push(white);
-let cols=['#ff2222','#ffeb00','#2244ff','#ff00ff','#ff8800','#00ffcc','#aa0000'];
-for(let i=0;i<7;i++)balls.push({x:110+i*32,y:130+(i%2)*22,vx:0,vy:0,r:11,c:cols[i],out:false});
-loop();
-}
-function getPos(e){let r=canvas.getBoundingClientRect();let t=e.touches?e.touches[0]:e;return{x:(t.clientX-r.left)*(canvas.width/r.width),y:(t.clientY-r.top)*(canvas.height/r.height)}}
-canvas.addEventListener('touchstart',e=>{e.preventDefault();let p=getPos(e);if(Math.hypot(p.x-white.x,p.y-white.y)<35){cue.drag=true;cue.sx=p.x;cue.sy=p.y;}}, {passive:false});
-canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!cue.drag)return;let p=getPos(e);cue.cx=p.x;cue.cy=p.y;let dx=white.x-p.x,dy=white.y-p.y;cue.power=Math.min(Math.hypot(dx,dy)*0.6,100);fill.style.width=cue.power+'%';}, {passive:false});
-canvas.addEventListener('touchend',e=>{if(!cue.drag)return;cue.drag=false;fill.style.width='0%';let dx=white.x-cue.cx,dy=white.y-cue.cy;white.vx=dx*0.18;white.vy=dy*0.18;cue.power=0;});
-canvas.addEventListener('mousedown',e=>{let p=getPos(e);if(Math.hypot(p.x-white.x,p.y-white.y)<35){cue.drag=true;cue.sx=p.x;cue.sy=p.y;}});
-canvas.addEventListener('mousemove',e=>{if(!cue.drag)return;let p=getPos(e);cue.cx=p.x;cue.cy=p.y;let dx=white.x-p.x,dy=white.y-p.y;cue.power=Math.min(Math.hypot(dx,dy)*0.6,100);fill.style.width=cue.power+'%';});
-canvas.addEventListener('mouseup',e=>{if(!cue.drag)return;cue.drag=false;fill.style.width='0%';let p=getPos(e);let dx=white.x-p.x,dy=white.y-p.y;white.vx=dx*0.18;white.vy=dy*0.18;});
-function collide(a,b){
-let dx=b.x-a.x,dy=b.y-a.y,dist=Math.hypot(dx,dy),min=a.r+b.r;
-if(dist<min&&dist>0){
-let overlap=(min-dist)/2;let nx=dx/dist,ny=dy/dist;
-a.x-=nx*overlap;b.x+=nx*overlap;a.y-=ny*overlap;b.y+=ny*overlap;
-let dvx=b.vx-a.vx,dvy=b.vy-a.vy,dot=dvx*nx+dvy*ny;
-if(dot<0){let imp=dot; a.vx+=imp*nx; a.vy+=imp*ny; b.vx-=imp*nx; b.vy-=imp*ny;}
-}}
-function loop(){
-ctx.clearRect(0,0,360,600);ctx.fillStyle='#0a5c36';ctx.fillRect(0,0,360,600);
-pockets.forEach(p=>{ctx.fillStyle='#000';ctx.beginPath();ctx.arc(p.x,p.y,15,0,Math.PI*2);ctx.fill();});
-for(let i=0;i<balls.length;i++){for(let j=i+1;j<balls.length;j++){if(!balls[i].out&&!balls[j].out)collide(balls[i],balls[j]);}}
-balls.forEach(b=>{
-if(b.out)return;
-b.x+=b.vx;b.y+=b.vy;b.vx*=0.987;b.vy*=0.987;
-if(Math.abs(b.vx)<0.04)b.vx=0;if(Math.abs(b.vy)<0.04)b.vy=0;
-if(b.x-b.r<2||b.x+b.r>358){b.vx*=-0.85;b.x=Math.max(b.r+2,Math.min(358-b.r,b.x));}
-if(b.y-b.r<2||b.y+b.r>598){b.vy*=-0.85;b.y=Math.max(b.r+2,Math.min(598-b.r,b.y));}
-pockets.forEach(p=>{if(Math.hypot(b.x-p.x,b.y-p.y)<14){if(b===white){b.x=180;b.y=480;b.vx=0;b.vy=0;}else b.out=true;}});
-ctx.fillStyle=b.c;ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fill();
-if(b.c==='white'){ctx.strokeStyle='#999';ctx.lineWidth=1;ctx.stroke();}
-});
-if(cue.drag){ctx.strokeStyle='#d2a679';ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(cue.cx,cue.cy);ctx.lineTo(white.x,white.y);ctx.stroke();
-ctx.strokeStyle='rgba(255,255,255,.6)';ctx.lineWidth=1;ctx.setLineDash([5,5]);ctx.beginPath();ctx.moveTo(white.x,white.y);ctx.lineTo(white.x+(white.x-cue.cx)*0.5,white.y+(white.y-cue.cy)*0.5);ctx.stroke();ctx.setLineDash([]);}
-requestAnimationFrame(loop);
-}
-</script></body></html>
+function openG(g){menu.style.display='none';game.style.display='flex';dBilliard.style.display=g=='billiard'?'block':'none';dCatur.style.display=g=='catur'?'block':'none';dKartu.style.display=g=='kartu'?'block':'none';dBingo.style.display=g=='bingo'?'block':'none';gt.innerText=g;if(g=='billiard')initB();if(g=='catur')initC();if(g=='kartu')initK();if(g=='bingo')initBingo

@@ -1,74 +1,75 @@
 <!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MAIN-MANIA v2 - Billiard Pro</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;touch-action:none}
-body{background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);color:white;font-family:system-ui;min-height:100vh}
-header{padding:15px;text-align:center}
-header h1{color:#ffd700;font-size:28px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:15px;max-width:500px;margin:0 auto}
-.card{background:rgba(255,255,255,0.08);border-radius:18px;padding:18px;text-align:center;border:1px solid rgba(255,255,255,0.1);cursor:pointer}
-.card.new{border:2px solid #ffd700;box-shadow:0 0 15px rgba(255,215,0,0.4)}
-.badge{background:#ffd700;color:#000;font-size:10px;padding:2px 7px;border-radius:10px}
-#gameView{display:none;flex-direction:column;align-items:center;padding:10px}
-#info{display:flex;gap:15px;margin:10px;font-weight:bold;font-size:14px}
-#canvasWrap{border:10px solid #5d4037;border-radius:8px}
-canvas{display:block;background:radial-gradient(#2e8b57,#1e7d32)}
-button{padding:10px 18px;border:none;border-radius:20px;font-weight:bold;background:#ffd700;color:#000;margin:5px}
-#powerBar{width:200px;height:18px;background:#222;border-radius:10px;overflow:hidden;margin-top:8px;display:none}
-#powerFill{height:100%;width:0%;background:linear-gradient(90deg,#0f0,yellow,red)}
-</style>
-</head>
-<body>
-<header id="mainHeader">
-<h1>🎮 MAIN-MANIA v2</h1>
-<p style="color:#aaa;font-size:13px">Billiard Pro ada lobang & tongkat!</p>
-</header>
-
-<div id="menuView">
-<div class="grid">
-<div class="card new" onclick="playBilliard()"><div style="font-size:45px">🎱</div><h3>Billiard Pro <span class="badge">BARU!</span></h3><p style="font-size:11px;color:#aaa">6 lobang + tongkat</p></div>
-<div class="card" onclick="alert('Catur turnamen segera!')"><div style="font-size:45px">♟️</div><h3>Catur</h3></div>
-<div class="card" onclick="alert('Kartu 21 segera!')"><div style="font-size:45px">🃏</div><h3>Kartu 21</h3></div>
-<div class="card" onclick="alert('Bingo segera!')"><div style="font-size:45px">🔢</div><h3>Bingo</h3></div>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>MAIN-MANIA v3 - Billiard Fix</title><style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#1a1033;color:white;font-family:sans-serif;overflow:hidden}
+.header{text-align:center;padding:15px}.header h1{color:#ffde59}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:15px}
+.card{background:#2a1f4d;border:2px solid #3d2e6e;border-radius:20px;padding:20px;text-align:center}
+.card.active{border-color:#ffde59;box-shadow:0 0 15px #ffde59}
+.card b{display:block;margin-top:10px}
+.badge{background:#ffde59;color:#000;font-size:10px;padding:2px 6px;border-radius:10px}
+#gameArea{display:none;position:fixed;inset:0;background:#0f0a1f;flex-direction:column}
+canvas{background:#0a5c36;display:block;margin:auto;border:8px solid #5d4037;border-radius:10px;touch-action:none}
+.topbar{display:flex;justify-content:space-between;padding:10px}
+.btn{background:#ffde59;color:#000;border:none;padding:8px 15px;border-radius:20px;font-weight:bold}
+.power{height:10px;background:#333;margin:10px 20px;border-radius:10px;overflow:hidden}
+#powerFill{height:100%;width:0%;background:linear-gradient(90deg,green,yellow,red)}
+</style></head><body>
+<div id="menuPage">
+<div class="header"><h1>🎮 MAIN-MANIA v3</h1><p>Billiard Pro FIX - Tap untuk main!</p></div>
+<div class="menu">
+<div class="card active" onclick="startBilliard()"><div style="font-size:50px">🎱</div><b>Billiard Pro <span class="badge">FIX!</span></b><small>6 lobang + tongkat</small></div>
+<div class="card" onclick="alert('Catur segera!')"><div style="font-size:50px">♟️</div><b>Catur</b></div>
+<div class="card" onclick="alert('Kartu 21 segera!')"><div style="font-size:50px">🃏</div><b>Kartu 21</b></div>
+<div class="card" onclick="alert('Bingo segera!')"><div style="font-size:50px">🔢</div><b>Bingo</b></div>
 </div>
-<div style="text-align:center;margin:20px;color:#666;font-size:12px">💰 Koin: <span id="coins">1000</span></div>
+<p style="text-align:center;opacity:.5;margin-top:20px">💰 Koin: 1000</p>
 </div>
 
-<div id="gameView">
-<h2 style="color:#ffd700">🎱 BILLIARD PRO</h2>
-<div id="info"><span id="score">Masuk: 0/7</span><span id="shots">Pukulan: 0</span></div>
-<div id="canvasWrap"><canvas id="game" width="360" height="600"></canvas></div>
-<div id="powerBar"><div id="powerFill"></div></div>
-<div style="margin-top:12px"><button onclick="resetGame()">🔄 Reset</button><button onclick="showMenu()">🏠 Menu</button></div>
-<div style="margin-top:10px;color:#aaa;font-size:12px;text-align:center">Tap bola putih, tarik ke belakang untuk arah & power, lepas untuk pukul!</div>
+<div id="gameArea">
+<div class="topbar"><button class="btn" onclick="backMenu()">← Menu</button><b>BILLIARD PRO</b><span>💰1000</span></div>
+<canvas id="c" width="360" height="640"></canvas>
+<div class="power"><div id="powerFill"></div></div>
+<p style="text-align:center;font-size:12px;opacity:.7">Tarik bola putih ke belakang, lepas untuk tembak!</p>
 </div>
 
 <script>
-let coins=parseInt(localStorage.getItem('mainmania_coins')||'1000');
-document.getElementById('coins').textContent=coins;
-const canvas=document.getElementById('game');const ctx=canvas.getContext('2d');const W=360,H=600;const HOLE_R=20,BALL_R=11;
-const holes=[{x:15,y:15},{x:W/2,y:10},{x:W-15,y:15},{x:15,y:H-15},{x:W/2,y:H-10},{x:W-15,y:H-15}];
-let balls=[],cueBall,aiming=false,aimStart=null,aimEnd=null,isMoving=false,score=0,shots=0;
-function showMenu(){document.getElementById('menuView').style.display='block';document.getElementById('mainHeader').style.display='block';document.getElementById('gameView').style.display='none';}
-function playBilliard(){document.getElementById('menuView').style.display='none';document.getElementById('mainHeader').style.display='none';document.getElementById('gameView').style.display='flex';resetGame();}
-function resetGame(){balls=[];score=0;shots=0;isMoving=false;updateUI();cueBall={x:W/2,y:H-130,vx:0,vy:0,color:'#fff',isCue:true,inHole:false};balls.push(cueBall);const colors=['#e74c3c','#f1c40f','#3498db','#9b59b6','#e67e22','#1abc9c','#8B4513'];let idx=0;for(let r=0;r<3;r++){for(let c=0;c<=r;c++){if(idx>=colors.length)break;let x=W/2+(c-r/2)*(BALL_R*2+3);let y=90+r*(BALL_R*2+2);balls.push({x,y,vx:0,vy:0,color:colors[idx++],isCue:false,inHole:false});}}}
-function updateUI(){document.getElementById('score').textContent=`Masuk: ${score}/7`;document.getElementById('shots').textContent=`Pukulan: ${shots}`;document.getElementById('coins').textContent=coins;}
-function draw(){ctx.fillStyle='#1e7d32';ctx.fillRect(0,0,W,H);holes.forEach(h=>{ctx.beginPath();ctx.arc(h.x,h.y,HOLE_R,0,Math.PI*2);ctx.fillStyle='#000';ctx.fill();});balls.forEach(b=>{if(b.inHole)return;ctx.beginPath();ctx.arc(b.x,b.y,BALL_R,0,Math.PI*2);ctx.fillStyle=b.color;ctx.fill();});if(aiming&&aimStart&&aimEnd&&!isMoving){let dx=aimStart.x-aimEnd.x,dy=aimStart.y-aimEnd.y;let dist=Math.sqrt(dx*dx+dy*dy);let power=Math.min(dist*1.5,100);document.getElementById('powerBar').style.display='block';document.getElementById('powerFill').style.width=power+'%';let ang=Math.atan2(dy,dx);ctx.save();ctx.setLineDash([4,4]);ctx.strokeStyle='rgba(255,255,255,0.6)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cueBall.x,cueBall.y);ctx.lineTo(cueBall.x+Math.cos(ang)*180,cueBall.y+Math.sin(ang)*180);ctx.stroke();ctx.restore();ctx.save();ctx.strokeStyle='#d2b48c';ctx.lineWidth=7;ctx.lineCap='round';let len=70+power;let sx=cueBall.x-Math.cos(ang)*(BALL_R+len),sy=cueBall.y-Math.sin(ang)*(BALL_R+len);ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(cueBall.x-BALL_R*Math.cos(ang),cueBall.y-BALL_R*Math.sin(ang));ctx.stroke();ctx.restore();}else{document.getElementById('powerBar').style.display='none';}}
-function checkHole(){balls.forEach(b=>{if(b.inHole)return;holes.forEach(h=>{if(Math.hypot(b.x-h.x,b.y-h.y)<HOLE_R-2){b.inHole=true;b.vx=0;b.vy=0;if(b.isCue){setTimeout(()=>{b.x=W/2;b.y=H-130;b.inHole=false;if(score>0)score--;updateUI();},250);}else{score++;if(score>=7){coins+=200;localStorage.setItem('mainmania_coins',coins);setTimeout(()=>{alert('MENANG! +200 koin!');showMenu();},400);}updateUI();}}});});}
-function phys(){let mov=false;balls.forEach(b=>{if(b.inHole)return;b.x+=b.vx;b.y+=b.vy;b.vx*=0.985;b.vy*=0.985;if(Math.abs(b.vx)<0.05)b.vx=0;if(Math.abs(b.vy)<0.05)b.vy=0;if(b.vx||b.vy)mov=true;if(b.x-BALL_R<0){b.x=BALL_R;b.vx*=-0.8}if(b.x+BALL_R>W){b.x=W-BALL_R;b.vx*=-0.8}if(b.y-BALL_R<0){b.y=BALL_R;b.vy*=-0.8}if(b.y+BALL_R>H){b.y=H-BALL_R;b.vy*=-0.8}});for(let i=0;i<balls.length;i++)for(let j=i+1;j<balls.length;j++){let a=balls[i],b=balls[j];if(a.inHole||b.inHole)continue;let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy);if(d<BALL_R*2&&d>0){let nx=dx/d,ny=dy/d,mx=(a.x+b.x)/2,my=(a.y+b.y)/2;a.x=mx-nx*BALL_R;a.y=my-ny*BALL_R;b.x=mx+nx*BALL_R;b.y=my+ny*BALL_R;let dvx=b.vx-a.vx,dvy=b.vy-a.vy,dot=dvx*nx+dvy*ny;if(dot<0){a.vx+=dot*nx;a.vy+=dot*ny;b.vx-=dot*nx;b.vy-=dot*ny;}}}}isMoving=mov;}
-function loop(){phys();checkHole();draw();requestAnimationFrame(loop);}
-function getP(e){let r=canvas.getBoundingClientRect(),sx=W/r.width,sy=H/r.height,x=(e.touches?e.touches[0].clientX:e.clientX),y=(e.touches?e.touches[0].clientY:e.clientY);return{x:(x-r.left)*sx,y:(y-r.top)*sy};}
-canvas.addEventListener('touchstart',e=>{e.preventDefault();if(isMoving)return;let p=getP(e);if(Math.hypot(p.x-cueBall.x,p.y-cueBall.y)<BALL_R*3){aiming=true;aimStart={x:cueBall.x,y:cueBall.y};aimEnd=p;}});
-canvas.addEventListener('touchmove',e=>{e.preventDefault();if(aiming)aimEnd=getP(e);});
-canvas.addEventListener('touchend',e=>{e.preventDefault();if(!aiming)return;aiming=false;let dx=aimStart.x-aimEnd.x,dy=aimStart.y-aimEnd.y,d=Math.hypot(dx,dy);if(d>8){let a=Math.atan2(dy,dx),pw=Math.min(d*0.18,11);cueBall.vx=Math.cos(a)*pw;cueBall.vy=Math.sin(a)*pw;shots++;updateUI();}});
-canvas.addEventListener('mousedown',e=>{if(isMoving)return;let p=getP(e);if(Math.hypot(p.x-cueBall.x,p.y-cueBall.y)<BALL_R*3){aiming=true;aimStart={x:cueBall.x,y:cueBall.y};aimEnd=p;}});
-canvas.addEventListener('mousemove',e=>{if(aiming)aimEnd=getP(e);});
-canvas.addEventListener('mouseup',e=>{if(!aiming)return;aiming=false;let dx=aimStart.x-aimEnd.x,dy=aimStart.y-aimEnd.y,d=Math.hypot(dx,dy);if(d>8){let a=Math.atan2(dy,dx),pw=Math.min(d*0.18,11);cueBall.vx=Math.cos(a)*pw;cueBall.vy=Math.sin(a)*pw;shots++;updateUI();}});
+let canvas=document.getElementById('c'),ctx=canvas.getContext('2d'),balls=[],pockets=[],cue={x:0,y:0,show:false,power:0,drag:false},whiteBall;
+function backMenu(){document.getElementById('gameArea').style.display='none';document.getElementById('menuPage').style.display='block'}
+function startBilliard(){
+document.getElementById('menuPage').style.display='none';
+document.getElementById('gameArea').style.display='flex';
+initGame();
+}
+function initGame(){
+balls=[];pockets=[{x:15,y:15},{x:180,y:10},{x:345,y:15},{x:15,y:625},{x:180,y:630},{x:345,y:625}];
+whiteBall={x:180,y:500,vx:0,vy:0,r:10,color:'white'};
+balls.push(whiteBall);
+let colors=['#ff0000','#ffff00','#0000ff','#ff00ff','#ff8000','#00ffff','#800000'];
+for(let i=0;i<7;i++){balls.push({x:100+i*25,y:120+ (i%2)*20,vx:0,vy:0,r:10,color:colors[i]})}
 loop();
-</script>
-</body>
-</html>
+}
+let startX=0,startY=0;
+canvas.addEventListener('touchstart',e=>{let r=canvas.getBoundingClientRect();startX=e.touches[0].clientX-r.left;startY=e.touches[0].clientY-r.top;let d=Math.hypot(startX-whiteBall.x, startY-whiteBall.y);if(d<30){cue.drag=true}});
+canvas.addEventListener('touchmove',e=>{if(!cue.drag)return;let r=canvas.getBoundingClientRect();let x=e.touches[0].clientX-r.left;let y=e.touches[0].clientY-r.top;let dx=whiteBall.x-x,dy=whiteBall.y-y;cue.power=Math.min(Math.hypot(dx,dy)/2,100);document.getElementById('powerFill').style.width=cue.power+'%';cue.x=x;cue.y=y;cue.show=true});
+canvas.addEventListener('touchend',e=>{if(!cue.drag)return;cue.drag=false;cue.show=false;let dx=whiteBall.x-cue.x,dy=whiteBall.y-cue.y;whiteBall.vx=dx*0.15;whiteBall.vy=dy*0.15;document.getElementById('powerFill').style.width='0%';cue.power=0});
+canvas.addEventListener('mousedown',e=>{let r=canvas.getBoundingClientRect();startX=e.clientX-r.left;startY=e.clientY-r.top;let d=Math.hypot(startX-whiteBall.x,startY-whiteBall.y);if(d<30)cue.drag=true});
+canvas.addEventListener('mousemove',e=>{if(!cue.drag)return;let r=canvas.getBoundingClientRect();let x=e.clientX-r.left;let y=e.clientY-r.top;let dx=whiteBall.x-x,dy=whiteBall.y-y;cue.power=Math.min(Math.hypot(dx,dy)/2,100);document.getElementById('powerFill').style.width=cue.power+'%';cue.x=x;cue.y=y;cue.show=true});
+canvas.addEventListener('mouseup',e=>{if(!cue.drag)return;cue.drag=false;cue.show=false;let dx=whiteBall.x-cue.x,dy=whiteBall.y-cue.y;whiteBall.vx=dx*0.15;whiteBall.vy=dy*0.15;document.getElementById('powerFill').style.width='0%';cue.power=0});
+
+function loop(){
+ctx.clearRect(0,0,360,640);
+ctx.fillStyle='#0a5c36';ctx.fillRect(0,0,360,640);
+// pockets
+pockets.forEach(p=>{ctx.fillStyle='black';ctx.beginPath();ctx.arc(p.x,p.y,14,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#333';ctx.lineWidth=2;ctx.stroke();});
+// balls physics
+balls.forEach(b=>{b.x+=b.vx;b.y+=b.vy;b.vx*=0.985;b.vy*=0.985;if(Math.abs(b.vx)<0.05)b.vx=0;if(Math.abs(b.vy)<0.05)b.vy=0;
+if(b.x-b.r<0||b.x+b.r>360)b.vx*=-1;if(b.y-b.r<0||b.y+b.r>640)b.vy*=-1;
+b.x=Math.max(b.r,Math.min(360-b.r,b.x));b.y=Math.max(b.r,Math.min(640-b.r,b.y));
+pockets.forEach(p=>{if(Math.hypot(b.x-p.x,b.y-p.y)<12 && b!=whiteBall){b.x=-100}});});
+if(Math.hypot(whiteBall.x-pockets[0].x,whiteBall.y-pockets[0].y)<12||Math.hypot(whiteBall.x-pockets[3].x,whiteBall.y-pockets[3].y)<12){whiteBall.x=180;whiteBall.y=500;whiteBall.vx=0;whiteBall.vy=0;}
+balls.forEach(b=>{ctx.fillStyle=b.color;ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fill();ctx.strokeStyle='rgba(0,0,0,.3)';ctx.stroke();});
+// cue
+if(cue.show){ctx.strokeStyle='#d2a679';ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(cue.x,cue.y);ctx.lineTo(whiteBall.x,whiteBall.y);ctx.stroke();ctx.fillStyle='white';ctx.beginPath();ctx.arc(whiteBall.x,whiteBall.y,3,0,Math.PI*2);ctx.fill();}
+requestAnimationFrame(loop);
+}
+</script></body></html>

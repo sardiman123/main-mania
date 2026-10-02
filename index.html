@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>MAGER v5.9 FIX</title>
+<title>MAGER v6.0 Rokade</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;touch-action:none}
+*{margin:0;padding:0;box-sizing:border-box;touch-action:manipulation}
 body{background:#0f0a1f;color:#fff;font-family:system-ui}
 .top{padding:12px;background:#0008;display:flex;justify-content:space-between;align-items:center}
 .coin{background:#ffcc00;color:#000;padding:6px 14px;border-radius:20px;font-weight:900}
@@ -10,111 +10,20 @@ body{background:#0f0a1f;color:#fff;font-family:system-ui}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}
 .card{background:#221a4a;border-radius:20px;padding:16px;text-align:center;border:1px solid #ffffff20}
 .btn{width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(90deg,#ff6a00,#ff2a6d);color:#fff;font-weight:900;margin-top:10px;font-size:16px}
-#gamePage{display:none;position:fixed;inset:0;background:#0f0a1f;z-index:9999}
-#gameHeader{display:flex;justify-content:space-between;padding:12px;background:#1a1330}
+#gamePage{display:none;position:fixed;inset:0;background:#0f0a1f;z-index:9999;overflow:auto}
+#gameHeader{display:flex;justify-content:space-between;padding:12px;background:#1a1330;align-items:center}
 canvas{background:#0e7a3a;border:3px solid #fff;display:block;margin:10px auto;border-radius:10px}
+#chessBoard{display:grid;grid-template-columns:repeat(8,1fr);width:352px;height:352px;margin:10px auto;border:3px solid #fff;border-radius:8px;overflow:hidden}
+.sq{display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900;position:relative}
+.light{background:#f0d9b5;color:#000}.dark{background:#b58863;color:#000}
+.sel{background:#f6f669!important;box-shadow:inset 0 0 0 4px #ff0}
+.hint::after{content:'';width:16px;height:16px;background:#0008;border-radius:50%;position:absolute}
 </style></head><body>
 <div id="home">
-<div class="top"><b>🎱 MAGER v5.9 12 BOLA</b><div class="coin">💰 725</div></div>
-<div class="bonus">🎁 BONUS LOGIN! - Tombol FIX</div>
+<div class="top"><b>🎱 MAGER v6.0</b><div class="coin">💰 725</div></div>
+<div class="bonus">♟️ UPDATE: Catur + Rokade Raja-Benteng Ukir!</div>
 <div class="grid">
-<div class="card"><div style="font-size:50px">🎱</div><b>12 Ball Pool</b><br>6 Lobang<button class="btn" onclick="playPool()">MAIN</button></div>
-<div class="card"><div style="font-size:50px">♟️</div><b>Catur</b><button class="btn" onclick="alert('Catur segera!')">MAIN</button></div>
-<div class="card"><div style="font-size:50px">🃏</div><b>Blackjack</b><button class="btn" onclick="alert('Blackjack segera!')">MAIN</button></div>
-<div class="card"><div style="font-size:50px">🎲</div><b>Bingo</b><button class="btn" onclick="alert('Bingo segera!')">MAIN</button></div>
-</div></div>
-
-<div id="gamePage">
-<div id="gameHeader"><button onclick="closeG()" style="padding:8px 16px;border-radius:8px;border:none">← Keluar</button><b>12 Ball Pool</b><div style="width:70px"></div></div>
-<div style="text-align:center;padding:10px">
-<canvas id="cv" width="350" height="580"></canvas>
-<p id="info" style="color:#ffcc00;font-weight:900;margin:8px">Tarik bola putih ke belakang!</p>
-<p>Shots: <span id="sh">0</span> | Masuk: <span id="sc">0</span>/12</p>
-<button onclick="resetG()" style="margin-top:10px;padding:10px 20px;border-radius:10px;border:none;background:#444;color:#fff">Reset Meja</button>
-</div></div>
-
-<script>
-let cv,cx,cue,balls,pockets,shots,score,drag=false,sx,sy;
-function playPool(){
- document.getElementById('home').style.display='none';
- document.getElementById('gamePage').style.display='block';
- setTimeout(init,100);
-}
-function closeG(){
- document.getElementById('gamePage').style.display='none';
- document.getElementById('home').style.display='block';
-}
-function resetG(){init()}
-function init(){
- cv=document.getElementById('cv'); cx=cv.getContext('2d');
- cue={x:175,y:450,vx:0,vy:0,mov:false}; balls=[]; shots=0; score=0;
- document.getElementById('sh').innerText='0'; document.getElementById('sc').innerText='0';
- pockets=[{x:10,y:10},{x:175,y:5},{x:340,y:10},{x:10,y:570},{x:175,y:575},{x:340,y:570}];
- for(let i=1;i<=12;i++){
-  let a=Math.random()*6.28, r=40+Math.random()*80;
-  balls.push({n:i,x:175+Math.cos(a)*r,y:180+Math.sin(a)*r,vx:0,vy:0,in:false});
- }
- // EVENT LISTENER BARU - FIX HP
- cv.ontouchstart=cv.onmousedown=function(e){
-  e.preventDefault();
-  let p=getPos(e);
-  if(Math.hypot(p.x-cue.x,p.y-cue.y)<30){drag=true; sx=p.x; sy=p.y;}
- }
- cv.ontouchmove=cv.onmousemove=function(e){
-  if(!drag) return;
-  e.preventDefault();
-  let p=getPos(e); sx=p.x; sy=p.y;
- }
- cv.ontouchend=cv.onmouseup=function(e){
-  if(!drag) return;
-  e.preventDefault();
-  let p=e.changedTouches?{x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY}: {x:sx,y:sy};
-  // hitung dari posisi terakhir
-  let pos=getPos(e.changedTouches?e.changedTouches[0]:e);
-  if(!pos) pos={x:sx,y:sy};
-  let dx=cue.x-pos.x, dy=cue.y-pos.y;
-  if(Math.hypot(dx,dy)>15){
-   cue.vx=dx*0.18; cue.vy=dy*0.18; cue.mov=true; shots++;
-   document.getElementById('sh').innerText=shots;
-  }
-  drag=false;
- }
- requestAnimationFrame(loop);
-}
-function getPos(e){
- if(!e.clientX && e.touches) e=e.touches[0];
- let r=cv.getBoundingClientRect();
- return {x:(e.clientX-r.left)*cv.width/r.width, y:(e.clientY-r.top)*cv.height/r.height};
-}
-function loop(){
- // update cue
- if(cue.mov){cue.x+=cue.vx; cue.y+=cue.vy; cue.vx*=0.985; cue.vy*=0.985;
-  if(Math.hypot(cue.vx,cue.vy)<0.2){cue.vx=0;cue.vy=0;cue.mov=false;}}
- if(cue.x<15||cue.x>335){cue.vx*=-1;cue.x=Math.max(15,Math.min(335,cue.x))}
- if(cue.y<15||cue.y>565){cue.vy*=-1;cue.y=Math.max(15,Math.min(565,cue.y))}
- // update balls
- balls.forEach(b=>{
-  if(b.in) return;
-  b.x+=b.vx; b.y+=b.vy; b.vx*=0.984; b.vy*=0.984;
-  if(Math.abs(b.vx)<0.05) b.vx=0; if(Math.abs(b.vy)<0.05) b.vy=0;
-  if(b.x<15||b.x>335){b.vx*=-1;b.x=Math.max(15,Math.min(335,b.x))}
-  if(b.y<15||b.y>565){b.vy*=-1;b.y=Math.max(15,Math.min(565,b.y))}
-  // tabrakan sama cue
-  let d=Math.hypot(b.x-cue.x,b.y-cue.y);
-  if(d<26 && cue.mov){let ang=Math.atan2(b.y-cue.y,b.x-cue.x); let sp=Math.hypot(cue.vx,cue.vy); b.vx=Math.cos(ang)*sp*1.1; b.vy=Math.sin(ang)*sp*1.1; cue.vx*=0.2; cue.vy*=0.2;}
-  // masuk lobang
-  pockets.forEach(p=>{if(Math.hypot(b.x-p.x,b.y-p.y)<22){b.in=true; score++; document.getElementById('sc').innerText=score; if(score>=12){alert('MENANG! 12 BOLA MASUK!'); init();}}});
- });
- // draw
- cx.clearRect(0,0,350,580); cx.fillStyle="#16a34a"; cx.fillRect(0,0,350,580);
- cx.fillStyle="#000"; pockets.forEach(p=>{cx.beginPath();cx.arc(p.x,p.y,18,0,6.28);cx.fill();});
- balls.forEach(b=>{
-  if(b.in) return; cx.beginPath();cx.arc(b.x,b.y,13,0,6.28);
-  cx.fillStyle=b.n==8?"#111":b.n%2==0?"#f00":"#ff0"; cx.fill(); cx.fillStyle="#fff"; if(b.n==8) cx.fillStyle="#fff"; else cx.fillStyle="#000";
-  cx.font="bold 11px Arial"; cx.textAlign="center"; cx.fillText(b.n,b.x,b.y+4);
- });
- cx.beginPath();cx.arc(cue.x,cue.y,13,0,6.28);cx.fillStyle="#fff";cx.fill();cx.strokeStyle="#000";cx.lineWidth=1;cx.stroke();
- if(drag){cx.beginPath();cx.moveTo(cue.x,cue.y);cx.lineTo(sx,sy);cx.strokeStyle="#ff0";cx.lineWidth=3;cx.stroke(); cx.fillStyle="#ff0"; cx.beginPath();cx.arc(sx,sy,6,0,6.28);cx.fill();}
- requestAnimationFrame(loop);
-}
-</script></body></html>
+<div class="card"><div style="font-size:50px">🎱</div><b>12 Ball Pool</b><br>6 Lobang - TETAP ADA!<button class="btn" onclick="playPool()">MAIN</button></div>
+<div class="card"><div style="font-size:50px">♟️</div><b>Catur Rokade</b><br>Ukir Raja-Benteng<button class="btn" onclick="playChess()">MAIN</button></div>
+<div class="card"><div style="font-size:50px">🃏</div><b>Blackjack</b><button class="btn" onclick="alert('Segera!')">MAIN</button></div>
+<div class="card"><div style="font-size:50px">

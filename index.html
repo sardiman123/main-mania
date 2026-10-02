@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MAGER v5.8 12 BOLA</title><link rel="manifest" href="manifest.json">
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0f0a1f;color:#fff;font-family:system-ui}
+.top{padding:12px;background:#0006;display:flex;justify-content:space-between}
+.coin{background:#ffcc00;color:#000;padding:6px 14px;border-radius:20px;font-weight:900}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px}
+.card{background:#221a4a;border-radius:22px;padding:16px;text-align:center;border:1px solid #ffffff15}
+.btn{width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(90deg,#ff6a00,#ff2a6d);color:#fff;font-weight:900;margin-top:10px}
+#gamePage{display:none;position:fixed;inset:0;background:#0f0a1f;z-index:9999;overflow:auto}
+canvas{background:#0e4a2e;border:2px solid #fff6;margin:10px auto;display:block;border-radius:8px}
+</style></head><body>
+<div id="home">
+<div class="top"><b>🎱 MAGER v5.8 12 BOLA</b><div class="coin">💰 725</div></div>
+<div style="background:#22f8ff;margin:12px;border-radius:12px;padding:10px;text-align:center;color:#000;font-weight:900">🎁 BONUS LOGIN!</div>
+<div class="grid">
+<div class="card"><div style="font-size:48px">🎱</div><b>12 Ball Pool</b><br><small>6 Lobang</small><button class="btn" onclick="openB()">MAIN</button></div>
+<div class="card"><div style="font-size:48px">♟️</div><b>Catur</b><button class="btn" onclick="openC()">MAIN</button></div>
+<div class="card"><div style="font-size:48px">🃏</div><b>Blackjack</b><button class="btn" onclick="openK()">MAIN</button></div>
+<div class="card"><div style="font-size:48px">🎲</div><b>Bingo</b><button class="btn" onclick="openBi()">MAIN</button></div>
+</div></div>
+<div id="gamePage">
+<div style="display:flex;justify-content:space-between;padding:12px;background:#1a1330"><button onclick="closeGame()" style="padding:8px 16px;border-radius:8px">← Keluar</button><b id="gameTitle"></b><div></div></div>
+<div id="pB" style="text-align:center;padding:20px"><h3>🎱 12 Ball Pool - 6 Lobang</h3><canvas id="cv" width="360" height="600"></canvas><p id="turn" style="color:#ffcc00;margin:8px">Tarik bola putih!</p><p>Shots: <span id="shots">0</span> | Masuk: <span id="score">0</span>/12</p></div>
+</div>
+<script>
+function openB(){document.getElementById('home').style.display='none';document.getElementById('gamePage').style.display='block';document.getElementById('pB').style.display='block';initB()}
+function closeGame(){document.getElementById('gamePage').style.display='none';document.getElementById('home').style.display='block'}
+var cv,cx,cue,balls,pockets,drag,shots,score;
+function initB(){cv=document.getElementById('cv');cx=cv.getContext('2d');cue={x:180,y:480,vx:0,vy:0,moving:false};balls=[];pockets=[{x:0,y:0},{x:180,y:0},{x:360,y:0},{x:0,y:600},{x:180,y:600},{x:360,y:600}];drag=null;shots=0;score=0;document.getElementById('shots').innerText='0';document.getElementById('score').innerText='0';
+for(var i=1;i<=12;i++){var ang=Math.random()*6.28;var r=60+Math.random()*60;balls.push({n:i,x:180+Math.cos(ang)*r,y:200+Math.sin(ang)*r,vx:0,vy:0,in:false})}
+loop()}
+function getPos(e){var r=cv.getBoundingClientRect();var t=e.touches?e.touches[0]:e;return{x:(t.clientX-r.left)*cv.width/r.width,y:(t.clientY-r.top)*cv.height/r.height}}
+cv&&cv.addEventListener('touchstart',function(e){e.preventDefault();var p=getPos(e);if(Math.hypot(p.x-cue.x,p.y-cue.y)<25){drag={x:p.x,y:p.y}}})
+cv&&cv.addEventListener('touchmove',function(e){if(!drag)return;e.preventDefault();var p=getPos(e);drag.x=p.x;drag.y=p.y})
+cv&&cv.addEventListener('touchend',function(e){if(!drag)return;var p=e.changedTouches?getPos(e):drag;var dx=cue.x-p.x,dy=cue.y-p.y;if(Math.hypot(dx,dy)>10){cue.vx=dx*0.15;cue.vy=dy*0.15;cue.moving=true;shots++;document.getElementById('shots').innerText=shots}drag=null})
+function drawB(){cx.clearRect(0,0,360,600);cx.fillStyle="#16a34a";cx.fillRect(0,0,360,600);cx.fillStyle="#0f0a1f";pockets.forEach(function(p){cx.beginPath();cx.arc(p.x,p.y,18,0,6.28);cx.fill()});balls.forEach(function(b){if(b.in)return;cx.beginPath();cx.arc(b.x,b.y,12,0,6.28);cx.fillStyle=b.n==8?"#000":b.n<=7?["#fff","#ffeb3b","#2196f3","#f44336","#9c27b0","#ff9800","#4caf50","#795548"][b.n]:["#fff","#ffeb3b","#2196f3","#f44336","#9c27b0"][b.n-8];cx.fill();cx.fillStyle=b.n==8||b.n==4||b.n==5?"#fff":"#000";cx.font="10px Arial";cx.textAlign="center";cx.fillText(b.n,b.x,b.y+3)});cx.beginPath();cx.arc(cue.x,cue.y,12,0,6.28);cx.fillStyle="#fff";cx.fill();cx.strokeStyle="#000";cx.lineWidth=1;cx.stroke();if(drag){cx.beginPath();cx.moveTo(cue.x,cue.y);cx.lineTo(drag.x,drag.y);cx.strokeStyle="#ff0";cx.lineWidth=2;cx.stroke()}}
+function updateB(){if(cue.moving){cue.x+=cue.vx;cue.y+=cue.vy;cue.vx*=0.98;cue.vy*=0.98;if(Math.hypot(cue.vx,cue.vy)<0.3){cue.vx=0;cue.vy=0;cue.moving=false}}if(cue.x<12||cue.x>348){cue.vx*=-1;cue.x=Math.max(12,Math.min(348,cue.x))}if(cue.y<12||cue.y>588){cue.vy*=-1;cue.y=Math.max(12,Math.min(588,cue.y))}
+balls.forEach(function(b){if(b.in)return;b.x+=b.vx;b.y+=b.vy;b.vx*=0.983;b.vy*=0.983;if(Math.abs(b.vx)<0.1)b.vx=0;if(Math.abs(b.vy)<0.1)b.vy=0;if(b.x<12||b.x>348){b.vx*=-1;b.x=Math.max(12,Math.min(348,b.x))}if(b.y<12||b.y>588){b.vy*=-1;b.y=Math.max(12,Math.min(588,b.y))}
+var d=Math.hypot(b.x-cue.x,b.y-cue.y);if(d<24&&cue.moving){var ang=Math.atan2(b.y-cue.y,b.x-cue.x);var sp=Math.hypot(cue.vx,cue.vy);b.vx=Math.cos(ang)*sp; b.vy=Math.sin(ang)*sp; cue.vx*=0.3; cue.vy*=0.3}
+pockets.forEach(function(p){if(Math.hypot(b.x-p.x,b.y-p.y)<20){b.in=true;score++;document.getElementById('score').innerText=score;if(score>=12){alert('MENANG! 12 bola masuk!');initB()}}})});}
+function loop(){updateB();drawB();requestAnimationFrame(loop)}
+function openC(){alert('Catur segera!')}function openK(){alert('Blackjack segera!')}function openBi(){alert('Bingo segera!')}
+</script></body></html>
